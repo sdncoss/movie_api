@@ -2,6 +2,9 @@ const express = require('express'),
     morgan = require('morgan');
 
 const app = express();
+const { check, validationResult } = require('express-validator');
+
+
 // Adding mongoose and mongodb
 const mongoose = require("mongoose");
 const Models = require("./models.js");
@@ -15,11 +18,32 @@ mongoose
 
 app.use(morgan('common'));
 
+//adding CORS
+const cors = require('cors');
+app.use(cors());
+/*
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
+*/
+
+
+// adding bodyparser
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
+
 
 let auth = require('./auth')(app);
 
@@ -87,24 +111,52 @@ app.get("/movies/director/:Director", passport.authenticate('jwt', { session: fa
     Birthday: Date
 }
 */
-app.post("/users", async (req, res) => {
-    try {
-        const user = await Users.findOne({ Username: req.body.Username });
-        if (user) {
-            return res.status(400).send(req.body.Username + "already exists");
-        } else {
-            const createdUser = await Users.create({
-                Username: req.body.Username,
-                Password: req.body.Password,
-                Email: req.body.Email,
-                Birthday: req.body.Birthday,
-            });
-            return res.status(201).json(createdUser);
-        }
-    } catch (err) {
-        res.status(500).send("Error: " + err);
+app.post('/users',
+  // Validation logic here for request
+  //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], async (req, res) => {
+
+  // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-});
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
+      .then((user) => {
+        if (user) {
+          //If the user is found, send a response that it already exists
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users
+            .create({
+              Username: req.body.Username,
+              Password: hashedPassword,
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })
+            .then((user) => { res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
 // Get all users
 app.get("/users", async (req, res) => {
@@ -154,10 +206,10 @@ JSON format expected
 }
 */
 app.put("/users/:Username", passport.authenticate('jwt', { session: false }), async (req, res) => {
-        // CONDITION TO CHECK ADDED HERE
-        if(req.user.Username !== req.params.Username){
-            return res.status(400).send('Permission denied');
-        }
+    // CONDITION TO CHECK ADDED HERE
+    if (req.user.Username !== req.params.Username) {
+        return res.status(400).send('Permission denied');
+    }
     try {
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
@@ -219,6 +271,7 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(8080, () => {
-    console.log("Your app is listening on port 8080.");
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
