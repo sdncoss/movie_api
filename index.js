@@ -62,7 +62,7 @@ app.get("/movies", passport.authenticate('jwt', { session: false }), async (req,
     try {
         const movies = await Movies.find();
         res.status(200).json(movies);
-    } catch (e) {
+    } catch (err) {
         res.status(500).send("Error: " + err);
     }
 });
@@ -72,7 +72,7 @@ app.get("/movies/:Title", passport.authenticate('jwt', { session: false }), asyn
     try {
         const movie = await Movies.findOne({ Title: req.params.Title });
         res.json(movie);
-    } catch (e) {
+    } catch (err) {
         console.error(err);
         res.status(500).send("Error: " + err);
     }
