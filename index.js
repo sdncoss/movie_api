@@ -21,7 +21,7 @@ app.use(morgan('common'));
 
 //adding CORS
 const cors = require('cors');
-//app.use(cors());
+app.use(cors());
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
