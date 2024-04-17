@@ -53,9 +53,9 @@ require('./passport');
 
 
 
-////app.get("/", (req, res) => {
+app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
-//});
+});
 
 // Retrieves all movies
 app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
