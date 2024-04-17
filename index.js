@@ -1,7 +1,7 @@
 //utilizing Express, Morgan, Mongoose and MongoDB to set up a local API
 
-const express = require('express'),
-    morgan = require('morgan');
+const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 const { check, validationResult } = require('express-validator');
@@ -21,21 +21,20 @@ app.use(morgan('common'));
 
 //adding CORS
 const cors = require('cors');
-app.use(cors());
-/*
+//app.use(cors());
+
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors({
   origin: (origin, callback) => {
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      let message = "The CORS policy for this application does not allow access from origin " + origin;
       return callback(new Error(message ), false);
     }
     return callback(null, true);
   }
 }));
-*/
 
 app.use(express.json());
 // adding bodyparser
