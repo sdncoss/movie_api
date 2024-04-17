@@ -1,3 +1,5 @@
+//utilizing Express, Morgan, Mongoose and MongoDB to set up a local API
+
 const express = require('express'),
     morgan = require('morgan');
 
@@ -12,9 +14,8 @@ const Models = require("./models.js");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose
-    .connect("mongodb://localhost/myFlixDB")
-    .then(() => console.log("mongodb connected"));
+
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(morgan('common'));
 
@@ -44,17 +45,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
-
+//Adding auth.js 
 let auth = require('./auth')(app);
-
+//Adding passport.js
 const passport = require('passport');
 require('./passport');
 
 
 
-app.get("/", (req, res) => {
+////app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
-});
+//});
 
 // Retrieves all movies
 app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -112,11 +113,6 @@ app.get("/movies/director/:Director", passport.authenticate('jwt', { session: fa
 }
 */
 app.post('/users',
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -275,3 +271,7 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
+
+
+
+
