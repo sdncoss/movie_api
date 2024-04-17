@@ -36,6 +36,9 @@ app.use(cors({
   }
 }));
 
+//Adding auth.js 
+let auth = require('./auth')(app);
+
 app.use(express.json());
 // adding bodyparser
 //const bodyParser = require('body-parser');
@@ -44,8 +47,7 @@ app.use(express.json());
 
 //app.use(bodyParser.json());
 
-//Adding auth.js 
-let auth = require('./auth')(app);
+
 //Adding passport.js
 const passport = require('passport');
 require('./passport');
