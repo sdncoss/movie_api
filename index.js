@@ -24,31 +24,11 @@ app.use(morgan('common'));
 const cors = require('cors');
 app.use(cors());
 
-/*let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = "The CORS policy for this application does not allow access from origin " + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
-*/
 
 //Adding auth.js 
 let auth = require('./auth')(app);
 
 app.use(express.json());
-// adding bodyparser
-//const bodyParser = require('body-parser');
-
-//app.use(bodyParser.urlencoded({ extended: true }));
-
-//app.use(bodyParser.json());
-
 
 //Adding passport.js
 const passport = require('passport');
@@ -59,6 +39,9 @@ require('./passport');
 app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
+
+// serve the “documentation.html” and any other files from the public folder
+app.use(express.static('public'));
 
 // Retrieves all movies
 app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -269,6 +252,11 @@ app.use((err, req, res, next) => {
 });
 
 
+/*
+app.listen(808, () => {
+    console.log('Your app is listening on port 8080');
+});
+*/
 
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
