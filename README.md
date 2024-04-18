@@ -1,0 +1,3 @@
+-The project will demonstrate your mastery of full-stack JavaScript development, including APIs, web server frameworks, databases, business logic, authentication, data security, and more. The complete tech stack you’ll master is known as the MERN (MongoDB, Express, React, and Node.js) stack.
+
+-This API is a Node.js and Express application with REST architecture, with URL endpoints corresponding to Movies, Users and a Login, built using MongoDB and Mongoose business logic. Hosted on Github while deployed on Heroku.
