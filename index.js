@@ -1,15 +1,14 @@
 //utilizing Express, Morgan, Mongoose and MongoDB to set up a local API
 
 const express = require('express');
-const morgan = require('morgan');
-
-const app = express();
-const { check, validationResult } = require('express-validator');
-
-
-// Adding mongoose and mongodb
 const mongoose = require("mongoose");
 const Models = require("./models.js");
+const { check, validationResult } = require('express-validator');
+
+const morgan = require('morgan');
+app.use(morgan('common'));
+
+const app = express();
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -18,7 +17,6 @@ const Users = Models.User;
 //mongoose.connect( 'mongodb+srv://myFlixDBAdmin:key4Admin@myflixdb.pbuuvfd.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(morgan('common'));
 
 //adding CORS
 const cors = require('cors');
@@ -27,8 +25,6 @@ app.use(cors());
 
 //Adding auth.js 
 let auth = require('./auth')(app);
-
-app.use(express.json());
 
 //Adding passport.js
 const passport = require('passport');
@@ -40,6 +36,7 @@ app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
 
+//app.use(express.json());
 // serve the “documentation.html” and any other files from the public folder
 app.use(express.static('public'));
 
@@ -259,7 +256,7 @@ app.listen(808, () => {
 */
 
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
+app.listen(port, '0.0.0.0', () => {
  console.log('Listening on Port ' + port);
 });
 
