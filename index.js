@@ -13,10 +13,10 @@ const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect( 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect( 'mongodb+srv://myFlixDBAdmin:key4Admin@myflixdb.pbuuvfd.mongodb.net/myFlixDB?retryWrites=true&w=majority&appName=myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect( 'mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect( 'mongodb+srv://myFlixDBAdmin:key4Admin@myflixdb.pbuuvfd.mongodb.net/my-flix-db?retryWrites=true&w=majority&appName=myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 //connects to MongoDB Atlas database
-//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 //adding CORS
