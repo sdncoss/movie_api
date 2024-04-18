@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const Models = require("./models.js");
 const { check, validationResult } = require('express-validator');
 
-const morgan = require('morgan');
-app.use(morgan('common'));
+//const morgan = require('morgan');
+//app.use(morgan('common'));
 
 const app = express();
 
