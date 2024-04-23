@@ -106,7 +106,6 @@ app.post('/users',
         check('Email', 'Email does not appear to be valid').isEmail()
     ], async (req, res) => {
 
-        console.log("Parameters for adding new user", req.body);
         // check the validation object for errors
         let errors = validationResult(req);
 
