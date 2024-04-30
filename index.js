@@ -44,7 +44,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Retrieves all movies
-app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get("/movies", /*passport.authenticate('jwt', { session: false }),*/ async (req, res) => {
     try {
         const movies = await Movies.find();
         res.status(200).json(movies);
