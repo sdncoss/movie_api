@@ -44,7 +44,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // Retrieves all movies
-app.get("/movies", /*passport.authenticate('jwt', { session: false }),*/ async (req, res) => {
+app.get("/movies", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const movies = await Movies.find();
         res.status(200).json(movies);
@@ -252,11 +252,7 @@ app.use((err, req, res, next) => {
 });
 
 
-/*
-app.listen(808, () => {
-    console.log('Your app is listening on port 8080');
-});
-*/
+
 
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
