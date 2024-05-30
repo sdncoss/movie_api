@@ -1,5 +1,5 @@
 
-require('dotenv').config()
+require('dotenv').config({ path: __dirname + '/.env' })
 //utilizing Express, Morgan, Mongoose and MongoDB to set up a local API
 
 const express = require('express');
