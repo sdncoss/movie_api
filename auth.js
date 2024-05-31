@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const jwtSecret = 'your_jwt_secret'; // Same key used in JWTStrategy
 
 const jwt = require('jsonwebtoken'),

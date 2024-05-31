@@ -3,6 +3,9 @@ const passport = require('passport'),
   Models = require('./models.js'),
   passportJWT = require('passport-jwt');
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
@@ -13,10 +16,10 @@ passport.use(
       usernameField: 'Username',
       passwordField: 'Password',
     },
-    async (username, password, callback) => {
-      console.log(`${username} ${password}`);
+    async (Username, Password, callback) => {
+      console.log(`${Username} ${Password}`);
       //find by username
-      await Users.findOne({ Username: username })
+      await Users.findOne({ Username: Username })
         .then((user) => {
           if (!user) {
             console.log('Incorrect username');
@@ -24,7 +27,7 @@ passport.use(
               message: 'Incorrect username or password.',
             });
           }
-          if (!user.validatePassword(password)) {
+          if (!user.validatePassword(Password)) {
             console.log('Incorrect password');
             return callback(null, false, { message: 'Incorrect password.' });
           }
