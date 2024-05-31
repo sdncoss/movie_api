@@ -1,5 +1,7 @@
 
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+
 //utilizing Express, Morgan, Mongoose and MongoDB to set up a local API
 
 const express = require('express');
