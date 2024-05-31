@@ -7,40 +7,11 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const { check, validationResult } = require('express-validator');
 
-const morgan = require('morgan');
-
+//const morgan = require('morgan');
+//app.use(morgan('common'));
 
 const app = express();
 
-//adding CORS
-const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'https://movieflixappforyou.netlify.app/'];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
-            let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
-
-//Adding auth.js 
-let auth = require('./auth')(app);
-
-
-//body-parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-
-//Adding passport.js
-const passport = require('passport');
-require('./passport');
-
-//mongoose models imported
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -50,19 +21,26 @@ const Users = Models.User;
 mongoose.connect(process.env.CONNECTION_URI).then(() => console.log("connected to db"));
 
 
-// Create a write stream for logging
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
-    flags: "a",
-});
+//adding CORS
+const cors = require('cors');
+app.use(cors());
 
-// Logger middleware using Morgan
-app.use(morgan("combined", { stream: accessLogStream }));
+
+//Adding auth.js 
+let auth = require('./auth')(app);
+
+//Adding passport.js
+const passport = require('passport');
+require('./passport');
+
+
 
 app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
 
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // serve the “documentation.html” and any other files from the public folder
 app.use(express.static('public'));
 
@@ -266,7 +244,7 @@ app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { se
     }
 });
 
-//app.use(express.static("public"));
+app.use(express.static("public"));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
