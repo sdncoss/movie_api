@@ -11,18 +11,19 @@ const morgan = require('morgan');
 
 
 const app = express();
+
 //adding CORS
 const cors = require('cors');
 app.use(cors());
+
+//Adding auth.js 
+let auth = require('./auth')(app);
+
 
 //body-parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-//Adding auth.js 
-let auth = require('./auth')(app);
 
 //Adding passport.js
 const passport = require('passport');
