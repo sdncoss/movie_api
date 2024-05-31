@@ -7,11 +7,26 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const { check, validationResult } = require('express-validator');
 
-//const morgan = require('morgan');
-//app.use(morgan('common'));
+const morgan = require('morgan');
+
 
 const app = express();
+//body-parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+//adding CORS
+const cors = require('cors');
+app.use(cors());
+
+//Adding auth.js 
+let auth = require('./auth')(app);
+
+//Adding passport.js
+const passport = require('passport');
+require('./passport');
+
+//mongoose models imported
 const Movies = Models.Movie;
 const Users = Models.User;
 
@@ -21,25 +36,19 @@ const Users = Models.User;
 mongoose.connect(process.env.CONNECTION_URI).then(() => console.log("connected to db"));
 
 
-//adding CORS
-const cors = require('cors');
-app.use(cors());
+// Create a write stream for logging
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "log.txt"), {
+    flags: "a",
+});
 
-
-//Adding auth.js 
-let auth = require('./auth')(app);
-
-//Adding passport.js
-const passport = require('passport');
-require('./passport');
-
-
+// Logger middleware using Morgan
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
 
-app.use(express.json());
+
 // serve the “documentation.html” and any other files from the public folder
 app.use(express.static('public'));
 
@@ -243,7 +252,7 @@ app.delete("/users/:Username/movies/:MovieID", passport.authenticate('jwt', { se
     }
 });
 
-app.use(express.static("public"));
+//app.use(express.static("public"));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
