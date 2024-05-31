@@ -31,7 +31,7 @@ let auth = require('./auth')(app);
 
 //Adding passport.js
 const passport = require('passport');
-require('./passport');
+require('./passport.js');
 
 
 
