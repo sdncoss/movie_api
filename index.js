@@ -143,6 +143,26 @@ app.post('/users',
             });
     });
 
+// User login endpoint
+app.post("/login", async (req, res) => {
+    let { Username, Password } = req.body;
+    await Users.findOne({ Username })
+        .then((user) => {
+            if (!user) {
+                return res.status(400).send("User not found");
+            }
+            if (!user.validatePassword(Password)) {
+                return res.status(400).send("Incorrect password");
+            }
+            const token = auth.generateJWT(user);
+            return res.status(200).json({ user, token });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+        });
+});
+
 // Get all users
 app.get("/users", async (req, res) => {
     try {
