@@ -8,6 +8,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const { check, validationResult } = require('express-validator');
+const bodyParser = require("body-parser"),
+    methodOverride = require("method-override");
 
 //const morgan = require('morgan');
 //app.use(morgan('common'));
@@ -43,6 +45,11 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+
 // serve the “documentation.html” and any other files from the public folder
 app.use(express.static('public'));
 
