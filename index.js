@@ -30,6 +30,14 @@ const cors = require('cors');
 app.use(cors());
 
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
+//app.use(methodOverride());
+
+
 //Adding auth.js 
 let auth = require('./auth')(app);
 
@@ -43,11 +51,7 @@ app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(methodOverride());
+
 
 
 // serve the “documentation.html” and any other files from the public folder
