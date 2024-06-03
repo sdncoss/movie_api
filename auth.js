@@ -19,7 +19,7 @@ let generateJWTToken = (user) => {
 
 // POST login
 module.exports = (router) => {
-  router.post('/login', (req, res) => {
+  router.post('https://my-flix-db-975de3fb6719.herokuapp.com/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
       if (error || !user) {
         return res.status(400).json({
