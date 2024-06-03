@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const jwtSecret = 'your_jwt_secret'; // Same key used in JWTStrategy
+const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret'; // Same key used in JWTStrategy
 
 const jwt = require('jsonwebtoken'),
   passport = require('passport');
@@ -21,9 +21,17 @@ let generateJWTToken = (user) => {
 module.exports = (router) => {
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
-      if (error || !user) {
+      if (error) {
+        console.error("Authentication error: ", error);
         return res.status(400).json({
-          message: "Something is not right",
+          message: "Authentication error",
+          error: error,
+        });
+      }
+      if (!user) {
+        console.log("Authentication failed: ", info);
+        return res.status(400).json({
+          message: "Incorrect username or password",
           user: user,
         });
       }

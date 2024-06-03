@@ -17,7 +17,7 @@ passport.use(
       passwordField: 'Password',
     },
     async (username, password, callback) => {
-      console.log(`${username} ${password}`);
+      console.log(`Attempting login for user: ${username}`);
       //find by username
       await Users.findOne({ Username: username })
         .then((user) => {
@@ -36,7 +36,7 @@ passport.use(
         })
         .catch((error) => {
           if (error) {
-            console.log(error);
+            console.log("Error during authentication: ", error);
             return callback(error);
           }
         })
@@ -47,7 +47,7 @@ passport.use(
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'your_jwt_secret'
+  secretOrKey: process.env.JWT_SECRET || 'your_jwt_secret'
 }, async (jwtPayload, callback) => {
   return await Users.findById(jwtPayload._id)
     .then((user) => {
