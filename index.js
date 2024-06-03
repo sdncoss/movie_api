@@ -41,8 +41,10 @@ app.get("/", (req, res) => {
     res.send("Welcome to my movie app!");
 });
 
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // serve the “documentation.html” and any other files from the public folder
 app.use(express.static('public'));
 
