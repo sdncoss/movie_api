@@ -59,9 +59,9 @@ app.get("/movies", passport.authenticate('jwt', { session: false }), async (req,
 });
 
 // Retrieves movie by title
-app.get("/movies/:Title", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get("/movies/:movieId", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const movie = await Movies.findOne({ Title: req.params.Title });
+        const movie = await Movies.findOne({ Title: req.params.movieId });
         res.json(movie);
     } catch (err) {
         console.error(err);
@@ -239,11 +239,11 @@ app.put("/users/:Username", passport.authenticate('jwt', { session: false }), as
 });
 
 // Add movie to user list
-app.post("/users/:Username/movies/:Title", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post("/users/:Username/movies/:movieId", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
-            { $push: { FavoriteMovies: req.params.Title } },
+            { $push: { FavoriteMovies: req.params.movieId } },
             { new: true },
         );
         res.json(updatedUser);
@@ -254,11 +254,11 @@ app.post("/users/:Username/movies/:Title", passport.authenticate('jwt', { sessio
 });
 
 //Deletes movie from user list
-app.delete("/users/:Username/movies/:Title", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete("/users/:Username/movies/:movieId", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const updatedUser = await Users.findOneAndUpdate(
             { Username: req.params.Username },
-            { $pull: { FavoriteMovies: req.params.Title } },
+            { $pull: { FavoriteMovies: req.params.movieId } },
             { new: true },
         );
         res.json(updatedUser);
