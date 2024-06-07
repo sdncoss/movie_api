@@ -188,7 +188,7 @@ app.get("/users/:Username", async (req, res) => {
 });
 
 //Deletes user profile
-app.delete("/users", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete("/users/:Username", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await Users.findOneAndRemove({
             Username: req.params.Username,
@@ -212,7 +212,7 @@ JSON format expected
     Birthday: Date
 }
 */
-app.put("/users", passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.put("/users/:Username", passport.authenticate('jwt', { session: false }), async (req, res) => {
     // CONDITION TO CHECK ADDED HERE
     if (req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
