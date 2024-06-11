@@ -190,7 +190,7 @@ app.get("/users/:Username", async (req, res) => {
 //Deletes user profile
 app.delete("/users/:Username", passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const user = await Users.findOneAndRemove({
+        const user = await Users.findOneAndDelete({
             Username: req.params.Username,
         });
         if (!user) {
