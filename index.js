@@ -26,7 +26,7 @@ mongoose.connect(process.env.CONNECTION_URI).then(() => console.log("connected t
 //adding CORS
 const cors = require('cors');
 app.use(cors());
-
+app.options('*', cors());
 
 //Adding auth.js 
 let auth = require('./auth')(app);
