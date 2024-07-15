@@ -25,7 +25,7 @@ mongoose.connect(process.env.CONNECTION_URI).then(() => console.log("connected t
 
 //adding CORS
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://movieflixappforyou.netlify.app/'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://movieflixappforyou.netlify.app'];
 
 app.use(cors({
     origin: (origin, callback) => {
