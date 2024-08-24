@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>MyFlix Documentation</title>
+</head>
+
+<body>
+    <h1>MyFlix API</h1>
+    <p>This is a Node.js and Express application. This API uses REST architecture, with URL endpoints corresponding to
+        data operations of movie information in JSON format using standard HTTP response codes </p> <br>
+    <div></div>
+
+
+
+    <table>
+        <tr>
+            <th>Business Logic</th>
+            <th>Endpoint URL</th>
+            <th>HTTP Method</th>
+            <th>Reqest Body</th>
+            <th>Response Data</th>
+        </tr>
+        <tr>
+            <td>Get All Movies</td>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>JSON array of movie objects containing description, genre, director, image URL, and featured status.
+            </td>
+        </tr>
+        <tr>
+            <td>Get Movie by Title</td>
+            <td>/movies/{Title}</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a single movie, containing a description, genre, director, image URL
+                property. Example:<br>
+                {<br>
+                title: "Titanic",<br>
+                genre: "Romance",<br>
+                director: "James Cameron",<br>
+                "image URL":
+                "https://en.wikipedia.org/wiki/Titanic_(1997_film)#/media/File:Titanic_(1997_film)_poster.png",<br>
+                featured: false<br>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Get Movie by Genre</td>
+            <td>/movies/{Genre}</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a name/title by genre (description)</td>
+        </tr>
+        <tr>
+            <td>Get Director Information by Title or Director</td>
+            <td>/movies/{Director}</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a director of a specific movie. Example:<br>
+                {<br>
+                director: "James Cameron",<br>
+                bio: "is a Canadian filmmaker. He is a major figure in the post-New Hollywood era. He often uses novel
+                technologies with a classical filmmaking style",<br>
+                birthyear: "1954",<br>
+                deathyear: "Living"<br>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>New User Register</td>
+            <td>/users</td>
+            <td>POST</td>
+            <td>A JSON object holding data about the user to add. Example:<br /><br />
+                {<br>
+                Name: 'John Doe',<br />
+                Username: johndoe101,<br />
+                Email: johndoe@email.com,<br />
+                Password: Ilikemovies, <br />
+                Birthday: 'YYYY-MM-DD' <br>
+                }
+            </td>
+            <td>A JSON object holding data about the user that was added, including
+                their assigned id and auth token:<br />
+                { <br>
+                '_id': '######',<br />
+                Name: 'John Doe',<br />
+                Username: johndoe101,<br />
+                Email: johndoe@email.com,<br />
+                Password: Ilikemovies, <br />
+                Birthday: 'YYYY-MM-DD' <br>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Update User Information</td>
+            <td>/users/{Username}</td>
+            <td>PUT</td>
+            <td>A JSON object holding data about the user to update. Example:<br /><br />
+                {<br>
+                Name: 'John Doe',<br />
+                Username: johndoe101,<br />
+                Email: johndoe@email.com,<br />
+                Password: Ilikemovies, <br />
+                Birthday: 'YYYY-MM-DD' <br>
+                }
+
+            </td>
+            <td>Allow users to update their user information. Example:<br>
+                {
+                '_id': '######',<br />
+                Name: 'John Doe',<br />
+                Username: johndoe101,<br />
+                Email: johndoe@email.com,<br />
+                Password: Ilikemovies, <br />
+                Birthday: 'YYYY-MM-DD' <br>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>Movie Favorite List</td>
+            <td>/users/{Username}/movies/{MovieID}</td>
+            <td>POST</td>
+            <td>None</td>
+            <td>Allow users to add a movie to their list of favorites with a text message indicating whether the movie
+                was successfully added
+                from the user's favorited movies</td>
+        </tr>
+        <tr>
+            <td>Remove from Favorite List</td>
+            <td>/users/{Username}/movies/{MovieID}</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>Allow users to remove a movie from their list of favorites with a text message indicating whether the
+                movie was successfully removed
+                from the user's favorited movies</td>
+        </tr>
+        <tr>
+            <td>Deregister User</td>
+            <td>/users/{Username}</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>Allow existing users to deregister with a confirmation stating the user has been deleted</td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
